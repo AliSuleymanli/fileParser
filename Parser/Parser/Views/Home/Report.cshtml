@@ -1,0 +1,100 @@
+﻿@model Parser.Models.PageUploadTransaction
+
+<style>
+    .mainprops > div {
+        display: flex;
+        width: 530px;
+    }
+
+        .mainprops > div > span:nth-child(1) {
+            flex: 2;
+            font-weight: bold;
+        }
+
+        .mainprops > div > span:nth-child(2) {
+            flex: 3;
+            margin-left: 10px;
+        }
+
+    td, th {
+        border: 1px solid grey;
+        text-align:right;
+    }
+
+    table {
+        border-border-spacing: none;
+    }
+
+    .details {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .total > td {
+        padding-top: 30px;
+        border: none;
+        border-bottom: 1px dashed;
+    }
+</style>
+
+
+@foreach (var chunk in Model.MainChunks)
+{
+    <section class="mainprops">
+        <div><span>Financial Institution</span>:<span>@chunk.FinancialInstitution</span></div>
+        <div><span>FX Settlement Date</span>:<span>@chunk.FXSettlementDate</span></div>
+        <div><span>Reconciliation File ID</span>:<span>@chunk.ReconciliationFileID</span> </div>
+        <div><span>Transaction Currency</span>:<span>@chunk.TransactionCurrency</span></div>
+        <div><span>Reconciliation Currency</span>:<span>@chunk.ReconciliationCurrency</span></div>
+    </section>
+
+    <section class="details">
+        <table>
+            <thead>
+                <tr>
+                    <th>Settlement Category </th>
+                    <th>Transaction Amount Credit</th>
+                    <th>Reconciliation Amnt Credit</th>
+                    <th>Fee Amount Credit</th>
+                    <th>Transaction Amount Debit</th>
+                    <th>Reconciliation Amnt Debit</th>
+                    <th>Fee Amount Debit</th>
+                    <th>Count Total</th>
+                    <th>Net Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    MainChunkDetail total = chunk.total;
+
+                    foreach (var detail in chunk.ChunkDetails)
+                    {
+                        <tr>
+                            <td>@detail.SettlementCategory</td>
+                            <td>@detail.TransactionAmountCredit</td>
+                            <td>@detail.ReconciliationAmntCredit</td>
+                            <td>@detail.FeeAmountCredit</td>
+                            <td>@detail.TransactionAmountDebit</td>
+                            <td>@detail.ReconciliationAmntDebit</td>
+                            <td>@detail.FeeAmountDebit</td>
+                            <td>@detail.CountTotal</td>
+                            <td>@detail.NetValue</td>
+                        </tr>
+                    }
+
+                    <tr class="total">
+                        <td>Totals:</td>
+                        <td>@total.TransactionAmountCredit</td>
+                        <td>@total.ReconciliationAmntCredit</td>
+                        <td>@total.FeeAmountCredit</td>
+                        <td>@total.TransactionAmountDebit</td>
+                        <td>@total.ReconciliationAmntDebit</td>
+                        <td>@total.FeeAmountDebit</td>
+                        <td>@total.CountTotal</td>
+                        <td>@total.NetValue</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+}
